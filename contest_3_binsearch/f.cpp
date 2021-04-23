@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <bits/stdc++.h>
 #include <iostream>
 #include <vector>
 
@@ -8,20 +9,6 @@ using namespace std;
 
 int n;
 vector<pair<double, double>> xv;
-
-bool check(double &t) {
-  for (unsigned i = 0; i < n - 1; i++) {
-    double ri = xv.at(i).first + xv.at(i).second * t;
-
-    for (unsigned j = i + 1; j < n; j++) {
-      double rj = xv.at(j).first - xv.at(j).second * t;
-      if (ri < rj)
-        return false;
-    }
-  }
-
-  return true;
-}
 
 int main() {
 
@@ -38,16 +25,25 @@ int main() {
   sort(xv.begin(), xv.end(),
        [](auto &a, auto &b) { return a.first < b.first; });
 
-  double l = -100000000000.0;
-  double r = -l;
+  double r = 1e9 + 1;
+  double l = 0;
   double m;
 
-  rep(i, 200) {
+  rep(x, 500) {
     m = (l + r) * .5;
-    if (check(m))
-      r = m;
-    else
+
+    double L = DBL_MIN;
+    double R = DBL_MAX;
+
+    rep(i, n) {
+      L = max(L, xv.at(i).first - xv.at(i).second * m);
+      R = min(R, xv.at(i).first + xv.at(i).second * m);
+    }
+
+    if (R < L)
       l = m;
+    else
+      r = m;
   }
 
   cout << m << endl;
