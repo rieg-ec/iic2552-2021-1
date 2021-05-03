@@ -2,3 +2,4 @@ venv/
 test*
 *.in
 *.out
+.DS_Store
